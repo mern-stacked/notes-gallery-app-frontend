@@ -72,7 +72,11 @@ const SignupScreen = ({ navigation }) => {
                 </Spacer>
         </Spacer>
         
-        <Text onPress={() => navigation.navigate('Login')} style={styles.link}>Already Registered? Sign in</Text>
+        <Text onPress={() => navigation.navigate('UserLogin')} style={styles.link}>Already Registered? Sign in</Text>
+
+        <Spacer>
+        { state.message ? <Text style={styles.error}>{state.message}</Text> : null }       
+        </Spacer>
     </ScrollView>
     )
 };  
@@ -99,6 +103,11 @@ const styles = StyleSheet.create({
         color: 'blue',
         textDecorationLine: 'underline',
         margin: 10
+    },
+
+    error:{
+        color: 'red',
+        textAlign: 'center'
     }
 
 })
