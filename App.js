@@ -1,5 +1,7 @@
 import React from "react";
 import { NavigationContainer } from '@react-navigation/native';
+import { navigationRef } from "./src/RootNavigation";
+
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs'
 import { Ionicons } from '@expo/vector-icons';
@@ -13,35 +15,32 @@ import SignupScreen from "./src/screens/SignupScreen";
 import AdminLoginScreen from "./src/screens/AdminLoginScreen";
 
 import { Provider as AuthProvider } from './src/context/AuthContext';
-import { setNavigator } from "./src/navigationRef";
 
-// Home Screens
-const HomeStack = createNativeStackNavigator();
 
-function HomeStackScreen() {
+// Stack of Screens
+const AllScreenStack = createNativeStackNavigator();
+
+function AllScreensStack() {
   return (
-    <HomeStack.Navigator>
-      <HomeStack.Screen name="Account" component={AccountScreen} />
-      {/* <HomeStack.Screen name="List Notes" component={ListNoteScreen} /> */}
-      <HomeStack.Screen name="Create Notes" component={CreateNoteScreen} /> 
-      {/* <HomeStack.Screen name="Notes Detail" component={NotesDetailScreen} /> */}
-    </HomeStack.Navigator>
+    <AllScreenStack.Navigator
+    screenOptions={{
+      headerShown: false
+    }}>
+      <AllScreenStack.Screen name="Register" component={SignupScreen} />
+      <AllScreenStack.Screen name="UserLogin" component={SigninScreen} />
+      <AllScreenStack.Screen name="ListNotes" component={ListNoteScreen} />
+      <AllScreenStack.Screen name="Account" component={AccountScreen} />
+      <AllScreenStack.Screen name="CreateNotes" component={CreateNoteScreen} /> 
+      <AllScreenStack.Screen name="NotesDetail" component={NotesDetailScreen} />
+      <AllScreenStack.Screen name="AdminLogin" component={AdminLoginScreen} />
+    </AllScreenStack.Navigator>
   );
 }
 
-// Notes List and Detail Screens
-const NotesListStack = createNativeStackNavigator();
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////   Authentication Screens /////////////////////////////////////////////////////
 
-function NotesListStackScreen() {
-  return (
-    <NotesListStack.Navigator>
-      <NotesListStack.Screen name="List Notes" component={ListNoteScreen} />
-      <NotesListStack.Screen name="Notes Detail" component={NotesDetailScreen} />
-    </NotesListStack.Navigator>
-  );
-}
-
-// Authentication Screens
 const AuthStack = createNativeStackNavigator();
 
 function AuthStackScreen() {
@@ -56,8 +55,14 @@ function AuthStackScreen() {
     </AuthStack.Navigator>
   );
 }
+/////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Bottom Tab Navigator for Auhentication
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////   Bottom Tab Navigator for Auhentication  /////////////////////////////////////
+
 const Tab = createMaterialBottomTabNavigator();
 
 function TabNavigator() {
@@ -70,41 +75,33 @@ function TabNavigator() {
             iconName = focused ? 'ios-person' : 'ios-person-outline';
          } else if (route.name === 'User Login') {
             iconName = focused ? 'ios-people' : 'ios-people-outline';
-         }
+         }  else if (route.name === 'Notes') {
+          iconName = focused ? 'ios-book' : 'ios-book-outline';
+       }
         
-         return <Ionicons name={iconName} size={22} color={color}     />;
+         return <Ionicons name={iconName} size={22} color={color}   />;
         },
         })}
         tabBarOptions={{
         activeTintColor: 'red',
         inactiveTintColor: 'gray',
         }} >
-      <Tab.Screen name="Admin Login" component={AdminLoginScreen} />
-      <Tab.Screen name="User Login" component={AuthStackScreen} />
+      <Tab.Screen name="Notes" component={ListNoteScreen} />   
+      <Tab.Screen name="AdminLogin" component={AdminLoginScreen} />
+      <Tab.Screen name="UserLogin" component={AuthStackScreen} />
   </Tab.Navigator>
   );
 }
 
-const Navigation = () => {
-  return (
-    <NavigationContainer >  
-      <HomeStackScreen />
-    </NavigationContainer>
-  );
-}
-
-const Navigation1 = () => {
-  return (
-    <NavigationContainer >  
-      <TabNavigator />
-    </NavigationContainer>
-  );
-}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export default App = () => {
   return (
     <AuthProvider>
-      <Navigation1 />
+       <NavigationContainer ref={navigationRef} >   
+         <AllScreensStack />
+       </NavigationContainer>
     </AuthProvider>
   );
 }
