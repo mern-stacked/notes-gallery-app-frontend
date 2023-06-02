@@ -6,7 +6,7 @@ import { Context as AuthContext } from '../context/AuthContext';
 
 const SignupScreen = ({ navigation }) => {
 
-    const {state, signup} = useContext(AuthContext);
+    const {state, signup, clearErrorMessage } = useContext(AuthContext);
 
     const [uname, setUname] = useState('');
     const [email, setEmail] = useState('');
@@ -15,7 +15,8 @@ const SignupScreen = ({ navigation }) => {
     const [designation, setDesignation] = useState('');
   
     return (
-     <ScrollView style={styles.container}>           
+     <ScrollView style={styles.container}>    
+        <NavigationEvents onWillBlur={clearErrorMessage} />       
         <Spacer>
             <Avatar
                     size={68}

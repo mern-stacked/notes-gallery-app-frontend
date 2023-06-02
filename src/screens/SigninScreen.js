@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { NavigationEvents } from '@react-navigation/native-stack'
 import { View, StyleSheet } from "react-native";
 import { Text, Input, Button, Avatar } from '@rneui/themed';
 import Spacer from '../components/Spacer';
+import { Context as AuthContext } from '../context/AuthContext';
 
 const SigninScreen = ({ navigation }) => {
+
+     const {state, signin, clearErrorMessage } = useContext(AuthContext);
 
      const [email, setEmail] = useState('');
      const [password, setPassword] = useState('');
@@ -11,6 +15,7 @@ const SigninScreen = ({ navigation }) => {
   
     return (
         <View style={styles.container}>
+            <NavigationEvents onWillBlur={clearErrorMessage} />
            <Spacer>
              <Avatar
                 size={68}
@@ -39,11 +44,14 @@ const SigninScreen = ({ navigation }) => {
                       secureTextEntry />
                 {/* Signin Button */}
                 <Spacer>
-                    <Button title="Sign In" onPress={() => {} } />
+                    <Button title="Sign In" onPress={() =>signin({ email, password }) } />
                 </Spacer>
            </Spacer>
            <Text onPress={() => navigation.navigate('Register')} style={styles.link}>Not Registered? Sign Up</Text>
 
+        <Spacer>
+        { state.message ? <Text style={styles.error}>{state.message}</Text> : null }       
+        </Spacer>
        </View>
        )
    };  
@@ -71,6 +79,11 @@ const styles = StyleSheet.create({
         color: 'blue',
         textDecorationLine: 'underline',
         margin: 10
+    },
+
+     error:{
+        color: 'red',
+        textAlign: 'center'
     }
   
 })
