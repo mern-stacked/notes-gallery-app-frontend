@@ -1,8 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { View, StyleSheet } from "react-native";
 
-import { Avatar } from '@rneui/themed';
-import { Ionicons } from '@expo/vector-icons';
+import { Avatar, Text} from '@rneui/themed';
 import Spacer from '../components/Spacer';
 
 import { Context as AuthContext } from '../context/AuthContext';
@@ -19,11 +18,14 @@ const SplashSceen = () => {
         <View style={styles.container}>
             <Spacer>
                 <Avatar
-                    size={68}
+                    size={110}
                     rounded
                     icon={{ name: "book", type: "font-awesome" }}
-                    containerStyle={{ backgroundColor: "blue", marginTop: 30, marginBottom: 30, marginLeft: 140 }}
+                    containerStyle={{ backgroundColor: "blue", marginTop: 170, marginLeft: 120 }}
                 />
+            </Spacer>
+            <Spacer>
+               <Text h4 style={styles.center}>Loading....</Text> 
             </Spacer>
         </View>
     );
@@ -35,6 +37,10 @@ const styles = StyleSheet.create({
      container: {
         padding: 40,
         marginTop: 160
+    },
+
+    center: {
+        textAlign: 'center',
     },
   
 })

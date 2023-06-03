@@ -27,7 +27,7 @@ const tryLocalSignin = dispatch => async () => {
     const token = await AsyncStorage.getItem('token');
     if(token){
         dispatch({ type: 'signin', payload: token  });
-        navigate('Account' )       
+        navigate('My Account' )       
     } else {
         navigate('Register')
     }
@@ -57,7 +57,7 @@ const signin = (dispatch) => async ({ email, password }) => {
         // If we signup, modify our state, and say that we are authenticated  
         await AsyncStorage.setItem('token', response.data.token );
         dispatch({ type: 'signin', payload: response.data.token  });
-        navigate('Account', { email } )       
+        navigate('My Account', { email } )       
         // If signing up fails, manage it
     } catch (err) {
         console.log(err)
@@ -70,7 +70,7 @@ const signout = (dispatch) =>  async () => {
         // Sign out
         await AsyncStorage.removeItem('token');
         dispatch({ type: 'signout' });
-        navigate('UserLogin');       
+        navigate('UserLogin' );       
 
 }
 

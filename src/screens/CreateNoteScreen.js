@@ -1,16 +1,27 @@
 import React from 'react';
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
+import Spacer from '../components/Spacer';
+
 
 const CreateNoteScreen= ({ navigation }) => {
   
-    return <View>
-        <Text>Create a Note</Text>
-    </View>
+    return(
+        <View style={styles.container}>
+            <Spacer>
+                <Text>Create a note Screen</Text>
+            </Spacer>
+        </View>
+    );
 };  
 
 
 const styles = StyleSheet.create({
 
+    container: {
+        padding: 40,
+        marginTop: 160
+    }
+    
   
 })
 

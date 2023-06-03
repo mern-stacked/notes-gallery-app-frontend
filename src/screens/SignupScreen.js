@@ -32,7 +32,7 @@ const SignupScreen = ({ navigation }) => {
                     icon={{ name: "book", type: "font-awesome" }}
                     containerStyle={{ backgroundColor: "blue", marginTop: 30, marginBottom: 30, marginLeft: 140 }}
             />
-             <Text h4 style={styles.center}>Welcome!</Text>
+             <Text h2 style={styles.center}>Welcome!</Text>
              <Text h4 style={styles.center}>Sign Up to upload a Note.</Text>
         </Spacer>
         <Spacer />
