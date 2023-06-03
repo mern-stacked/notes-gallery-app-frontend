@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { ScrollView, StyleSheet } from "react-native";
 import { Text, Input, Button, Avatar } from '@rneui/themed';
 import Spacer from '../components/Spacer';
@@ -6,17 +6,26 @@ import { Context as AuthContext } from '../context/AuthContext';
 
 const SignupScreen = ({ navigation }) => {
 
-    const {state, signup, clearErrorMessage } = useContext(AuthContext);
+    const {state, signup, clearErrorMessage, tryLocalSignin } = useContext(AuthContext);
 
+    useEffect(() => {
+        tryLocalSignin();
+        const unsubscribe = navigation.addListener('focus', () => {
+            clearErrorMessage();
+         });
+         return unsubscribe;
+    }, [navigation]);
+    
     const [uname, setUname] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [cpassword, setcPassword] = useState('');
     const [designation, setDesignation] = useState('');
-  
+
+    
     return (
      <ScrollView style={styles.container}>    
-        <NavigationEvents onWillBlur={clearErrorMessage} />       
+        {/* <NavigationEvents onWillFocus={clearErrorMessage} />        */}
         <Spacer>
             <Avatar
                     size={68}

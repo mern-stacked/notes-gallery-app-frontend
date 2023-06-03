@@ -1,5 +1,4 @@
-import React, { useState, useContext } from 'react';
-import { NavigationEvents } from '@react-navigation/native-stack'
+import React, { useState, useContext, useEffect } from 'react';
 import { View, StyleSheet } from "react-native";
 import { Text, Input, Button, Avatar } from '@rneui/themed';
 import Spacer from '../components/Spacer';
@@ -12,10 +11,16 @@ const SigninScreen = ({ navigation }) => {
      const [email, setEmail] = useState('');
      const [password, setPassword] = useState('');
 
+     useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            clearErrorMessage();
+     });
+     return unsubscribe;
+    }, [navigation]);
   
     return (
         <View style={styles.container}>
-            <NavigationEvents onWillBlur={clearErrorMessage} />
+            {/* <NavigationEvents onWillFocus={clearErrorMessage} /> */}
            <Spacer>
              <Avatar
                 size={68}
