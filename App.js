@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs'
 import { Ionicons } from '@expo/vector-icons';
 
+import SplashSceen from "./src/screens/SplashScreen";
 import AccountScreen from "./src/screens/AccountScreen";
 import CreateNoteScreen from "./src/screens/CreateNoteScreen";
 import ListNoteScreen from "./src/screens/ListNotesScreen";
@@ -26,6 +27,7 @@ function AllScreensStack() {
     screenOptions={{
       headerShown: false
     }}>
+      <AllScreenStack.Screen name="Splash" component={SplashSceen} />
       <AllScreenStack.Screen name="Register" component={SignupScreen} />
       <AllScreenStack.Screen name="UserLogin" component={SigninScreen} />
       <AllScreenStack.Screen name="ListNotes" component={ListNoteScreen} />

@@ -6,10 +6,9 @@ import { Context as AuthContext } from '../context/AuthContext';
 
 const SignupScreen = ({ navigation }) => {
 
-    const {state, signup, clearErrorMessage, tryLocalSignin } = useContext(AuthContext);
+    const {state, signup, clearErrorMessage } = useContext(AuthContext);
 
     useEffect(() => {
-        tryLocalSignin();
         const unsubscribe = navigation.addListener('focus', () => {
             clearErrorMessage();
          });
