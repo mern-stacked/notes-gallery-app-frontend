@@ -1,8 +1,24 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { ScrollView, StyleSheet } from "react-native";
+import { ScrollView, View, StyleSheet, Image } from "react-native";
 import { Text, Input, Button, Avatar } from '@rneui/themed';
 import Spacer from '../components/Spacer';
 import { Context as AuthContext } from '../context/AuthContext';
+
+const isValidObjField = (obj) => {
+    return Object.values(obj).every(value => value.trim())
+}
+
+const updateError = (error, stateUpdater) => {
+    stateUpdater(error);
+    setTimeout(() => { 
+        stateUpdater()
+    }, 2500);
+}
+
+const isValidEmail = (value) => {
+    const regex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@(nie.ac.in)$/;
+    return regex.test(value);
+}
 
 const SignupScreen = ({ navigation }) => {
 
@@ -15,23 +31,68 @@ const SignupScreen = ({ navigation }) => {
          return unsubscribe;
     }, [navigation]);
     
-    const [uname, setUname] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [cpassword, setcPassword] = useState('');
-    const [designation, setDesignation] = useState('');
+    // const [uname, setUname] = useState('');
+    // const [email, setEmail] = useState('');
+    // const [password, setPassword] = useState('');
+    // const [cpassword, setcPassword] = useState('');
+    // const [designation, setDesignation] = useState('');
+    const [ userInfo, setUserInfo] = useState({
+        uname: '',
+        email: '',
+        password: '',
+        cpassword: '',
+        designation: '',
+    });
 
+    const [error, setError ] = useState('');
+
+    const { uname, email, password, cpassword, designation } = userInfo;
+
+    const handleOnchangeText = (value, fieldName) => {
+        setUserInfo( { ...userInfo, [fieldName]: value } );
+    };
+
+    const isValidForm = () => {
+        //accept only if all the field have value
+        if(!isValidObjField(userInfo)){
+            return updateError('All fields are required!', setError)
+        }
+        // id valid uname with three or more characters
+        if(!uname.trim() || uname.length < 3) {
+            return updateError('username should be more than three characters', setError)
+        }
+        // only valid email id is allowed
+        if(!isValidEmail(email)) return updateError('Invalid Email', setError)
+        // Password must have 8 or more characters
+        if(!password.trim() || password.length < 8 ){
+            return updateError('Password is less than 8 characters!', setError)
+        }
+        // password and cpassword must be the same
+        if(password !== cpassword) return updateError('Password doesnot match!', setError)
+
+        return true;
+    
+    }
+
+    const submitForm = () => {
+        if(isValidForm()){
+            signup({ uname, email, password, designation })
+        }
+    }
     
     return (
      <ScrollView style={styles.container}>    
         {/* <NavigationEvents onWillFocus={clearErrorMessage} />        */}
         <Spacer>
-            <Avatar
-                    size={68}
-                    rounded
-                    icon={{ name: "book", type: "font-awesome" }}
-                    containerStyle={{ backgroundColor: "blue", marginTop: 30, marginBottom: 30, marginLeft: 140 }}
-            />
+            <Spacer>
+                <Image
+                    style={styles.tinyLogo}
+                    source={{
+                    uri: 'https://niefgc.ac.in/images/nie.png',
+                }}
+                />
+            </Spacer>
+            <Spacer />
              <Text h2 style={styles.center}>Welcome!</Text>
              <Text h4 style={styles.center}>Sign Up to upload a Note.</Text>
         </Spacer>
@@ -39,22 +100,28 @@ const SignupScreen = ({ navigation }) => {
         <Spacer>
                 <Spacer />
                 {/* Name */}
+                { error ? (
+                    <Text style={styles.error}>{error}</Text>
+                ) : null }
                 <Input 
                     label="Name"
                     value={uname}
-                    onChangeText={setUname}
+                    // onChangeText={setUname}
+                    onChangeText={(value) => handleOnchangeText(value, 'uname') }
                     placeholder="This will be your username" />
                 {/* Email Address */}
                 <Input label="Email"
                     value={email}
-                    onChangeText={setEmail}
+                    // onChangeText={setEmail}
+                    onChangeText={(value) => handleOnchangeText(value, 'email') }
                     autoCapitalize='none'
                     autoCorrect={false}
                     placeholder="Enter your email address" />
                 {/* Password */}
                 <Input label="Password"
                     value={password}
-                    onChangeText={setPassword}
+                    // onChangeText={setPassword}
+                    onChangeText={(value) => handleOnchangeText(value, 'password') }
                     autoCapitalize='none'
                     autoCorrect={false}
                     secureTextEntry 
@@ -62,7 +129,8 @@ const SignupScreen = ({ navigation }) => {
                 {/* Confirm Password */}
                 <Input label="Confirm Password"
                     value={cpassword}
-                    onChangeText={setcPassword}
+                    // onChangeText={setcPassword}
+                    onChangeText={(value) => handleOnchangeText(value, 'cpassword') }
                     autoCapitalize='none'
                     autoCorrect={false}
                     secureTextEntry 
@@ -71,13 +139,16 @@ const SignupScreen = ({ navigation }) => {
                 {/* Designation */}
                 <Input label="Designation"
                         value={designation}
-                        type="select"
-                        onChangeText={setDesignation}
+                        onChangeText={(value) => handleOnchangeText(value, 'designation') }
+                        // type="select"
+                        // onChangeText={setDesignation}
                         placeholder="Faculty / Student"
                 />
           
                 <Spacer>
-                  <Button title="Sign Up" onPress={() => signup({ uname, email, password, designation })} />
+                  {/* <Button title="Sign Up" onPress={() => signup({ uname, email, password, designation })} /> */}
+                  <Button title="Sign Up" onPress={submitForm} />
+
                 </Spacer>
         </Spacer>
         
@@ -102,6 +173,12 @@ const styles = StyleSheet.create({
         padding: 40,
         marginTop: 30
     },
+
+    tinyLogo: {
+        width: 95,
+        marginLeft: 195,
+        height: 100,
+      },
 
     center: {
       textAlign: 'center',

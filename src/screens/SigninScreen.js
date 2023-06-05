@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Image } from "react-native";
 import { Text, Input, Button, Avatar } from '@rneui/themed';
 import Spacer from '../components/Spacer';
 import { Context as AuthContext } from '../context/AuthContext';
@@ -22,12 +22,15 @@ const SigninScreen = ({ navigation }) => {
         <View style={styles.container}>
             {/* <NavigationEvents onWillFocus={clearErrorMessage} /> */}
            <Spacer>
-             <Avatar
-                size={68}
-                rounded
-                icon={{ name: "book", type: "font-awesome" }}
-                containerStyle={{ backgroundColor: "blue", marginTop: 30, marginBottom: 30, marginLeft: 140 }}
-             />
+           <Spacer>
+                <Image
+                    style={styles.tinyLogo}
+                    source={{
+                    uri: 'https://niefgc.ac.in/images/nie.png',
+                }}
+                />
+            </Spacer>
+            <Spacer />
              <Text h4 style={styles.center}>Sign In to upload a Note.</Text>
             </Spacer>
             <Spacer />
@@ -73,6 +76,12 @@ const styles = StyleSheet.create({
      container: {
         padding: 40,
         marginTop: 160
+    },
+
+    tinyLogo: {
+        width: 95,
+        marginLeft: 195,
+        height: 100,
     },
 
     center: {

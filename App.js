@@ -83,35 +83,39 @@ function AccountTabNavigator() {
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////   Bottom Tab Navigator for Logged In User  /////////////////////////////////////
 
-// const Tab = createMaterialBottomTabNavigator();
+const AuthTab = createMaterialBottomTabNavigator();
 
-// function AccountTabNavigator() {
-//   return (
-//     <Tab.Navigator 
-//          screenOptions={({ route }) => ({
-//          tabBarIcon: ({ focused, color, size }) => {  
-//          let iconName;
-//          if (route.name === 'Admin Login') {
-//             iconName = focused ? 'ios-person' : 'ios-person-outline';
-//          } else if (route.name === 'User Login') {
-//             iconName = focused ? 'ios-people' : 'ios-people-outline';
-//          }  else if (route.name === 'Notes') {
-//           iconName = focused ? 'ios-book' : 'ios-book-outline';
-//        }
+function AuthTabNavigator() {
+  return (
+    <AuthTab.Navigator 
+       screenOptions={{
+        headerShown: false
+      }}
+      //    screenOptions={({ route }) => ({
+      //    tabBarIcon: ({ focused, color, size }) => {  
+      //    let iconName;
+      //    if (route.name === 'Admin Login') {
+      //       iconName = focused ? 'ios-person' : 'ios-person-outline';
+      //    } else if (route.name === 'User Login') {
+      //       iconName = focused ? 'ios-people' : 'ios-people-outline';
+      //    }  else if (route.name === 'Notes') {
+      //     iconName = focused ? 'ios-book' : 'ios-book-outline';
+      //  }
         
-//          return <Ionicons name={iconName} size={22} color={color}   />;
-//         },
-//         })}
-//         tabBarOptions={{
-//         activeTintColor: 'red',
-//         inactiveTintColor: 'gray',
-//         }} >
-//       <Tab.Screen name="ListNotes" component={ListNoteScreen} />   
-//       <Tab.Screen name="CreateNotes" component={CreateNoteScreen} />
-//       <Tab.Screen name="MyAccount" component={AccountScreen} />
-//   </Tab.Navigator>
-//   );
-// }
+      //    return <Ionicons name={iconName} size={22} color={color}   />;
+      //   },
+      //   })}
+      //   tabBarOptions={{
+      //   activeTintColor: 'red',
+      //   inactiveTintColor: 'gray',
+      //   }} >
+      >
+      <AuthTab.Screen options={{ headerShown: false }} name="Register" component={SignupScreen} />   
+      <AuthTab.Screen options={{ headerShown: false }} name="UserLogin" component={SigninScreen} />
+      <AuthTab.Screen options={{ headerShown: false }} name="AdminLogin" component={AdminLoginScreen} />
+  </AuthTab.Navigator>
+  );
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -124,8 +128,10 @@ function AllScreensStack() {
       <AllScreenStack.Screen options={{ headerShown: false }} name="Splash" component={SplashSceen} />
       <AllScreenStack.Screen options={{ headerShown: false }} name="Register" component={SignupScreen} />
       <AllScreenStack.Screen options={{ headerShown: false }} name="UserLogin" component={SigninScreen} />
-      <AllScreenStack.Screen options={{ headerShown: false }} name="AdminLogin" component={AdminLoginScreen} />
+      {/* <AllScreenStack.Screen options={{ headerShown: false }} name="AdminLogin" component={AdminLoginScreen} /> */}
+      <AllScreenStack.Screen name="Authentication" component={AuthTabNavigator} />
       <AllScreenStack.Screen name="My Account" component={AccountTabNavigator} />
+
       {/* <AllScreenStack.Screen name="Account" component={AccountScreen} />
       <AllScreenStack.Screen name="CreateNotes" component={CreateNoteScreen} />  */}
       <AllScreenStack.Screen name="NotesDetail" component={NotesDetailScreen} />
