@@ -66,9 +66,9 @@ function AccountTabNavigator() {
         activeTintColor: 'red',
         inactiveTintColor: 'gray',
         }} >
-      <AccountTab.Screen name="ListNotes" component={ListNoteScreen} />   
-      <AccountTab.Screen name="CreateNotes" component={CreateNoteScreen} />
       <AccountTab.Screen name="MyAccount" component={AccountScreen} />
+      <AccountTab.Screen name="CreateNotes" component={CreateNoteScreen} />
+      <AccountTab.Screen name="ListNotes" component={ListNoteScreen} />   
   </AccountTab.Navigator>
   );
 }
@@ -132,8 +132,8 @@ function AllScreensStack() {
       <AllScreenStack.Screen name="Authentication" component={AuthTabNavigator} />
       <AllScreenStack.Screen name="My Account" component={AccountTabNavigator} />
 
-      {/* <AllScreenStack.Screen name="Account" component={AccountScreen} />
-      <AllScreenStack.Screen name="CreateNotes" component={CreateNoteScreen} />  */}
+      {/* <AllScreenStack.Screen name="Account" component={AccountScreen} /> */}
+      {/* <AllScreenStack.Screen name="Create Notes" component={CreateNoteScreen} />  */}
       <AllScreenStack.Screen name="NotesDetail" component={NotesDetailScreen} />
     </AllScreenStack.Navigator>
   );
