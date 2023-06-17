@@ -7,12 +7,36 @@ const authReducer = (state, action ) => {
     switch(action.type){
         case 'signup_error':
             return { ...state, message: action.payload }
+        case 'signup':
+            return { message: '', 
+                    token: action.payload.token }
         case 'signin':
-            return { message: '',  token: action.payload }
+            return { ...state,
+                     message: '', 
+                     token: action.payload.token,
+                     userId: action.payload.userId,
+                     userName: action.payload.userName,
+                     userEmail: action.payload.userEmail,
+                     userDesignation: action.payload.userDesignation,
+                    }
+        case 'automaticsignin':
+            return { 
+                    ...state,
+                    message: '', 
+                    token: action.payload.token,
+                    userId: action.payload.userId,
+                    userName: action.payload.userName,
+                    userEmail: action.payload.userEmail,
+                    userDesignation: action.payload.userDesignation,
+                   }
         case 'clear_error_message':
             return { ...state, message: '' }
         case 'signout':
             return { token: null, message: '' }
+        case 'note_create_success':
+             return { ...state, message: action.payload }
+        case 'note_create_fail':
+             return { ...state, message: action.payload }
         default:
             return state;
     }
@@ -25,8 +49,13 @@ const clearErrorMessage = dispatch => async () => {
 
 const tryLocalSignin = dispatch => async () => {
     const token = await AsyncStorage.getItem('token');
-    if(token){
-        dispatch({ type: 'signin', payload: token  });
+    const userId = await AsyncStorage.getItem('userId');
+    const userName = await AsyncStorage.getItem('userName');
+    const userEmail = await AsyncStorage.getItem('userEmail');
+    const userDesignation = await AsyncStorage.getItem('userDesignation');
+    
+    if(token && userId ){
+        dispatch({ type: 'automaticsignin', payload: { userId, token, userName, userEmail, userDesignation }  });
         navigate('My Account' )       
     } else {
         navigate('Register')
@@ -40,7 +69,7 @@ const signup = (dispatch) =>  async ({ uname, email, password, designation }) =>
             const response = await serverAPI.post('/users/signup', { name: uname, email, password, designation });
             // If we signup, modify our state, and say that we are authenticated  
             await AsyncStorage.setItem('token', response.data.token );
-            dispatch({ type: 'signin', payload: response.data.token  });
+            dispatch({ type: 'signup', payload: response.data.token  });
             navigate('UserLogin', { uname } )       
             // If signing up fails, manage it
         } catch (err) {
@@ -54,21 +83,63 @@ const signin = (dispatch) => async ({ email, password }) => {
     try{
         // Make a API request to signup with that entered email and password
         const response = await serverAPI.post('/users/login', { email, password });
-        // If we signup, modify our state, and say that we are authenticated  
-        await AsyncStorage.setItem('token', response.data.token );
-        dispatch({ type: 'signin', payload: response.data.token  });
-        navigate('My Account', { email } )       
-        // If signing up fails, manage it
+        // If we signin, modify our state, and say that we are authenticated  
+        const userId = response.data.user.id;
+        const userName = response.data.user.name;
+        const userEmail = response.data.user.email;
+        const userDesignation = response.data.user.designation;
+
+        const token = response.data.token;
+
+        await AsyncStorage.setItem('token', token );
+        await AsyncStorage.setItem('userId', userId );
+        await AsyncStorage.setItem('userName', userName );
+        await AsyncStorage.setItem('userEmail', userEmail );
+        await AsyncStorage.setItem('userDesignation', userDesignation );
+
+
+        // dispatch({ type: 'signin', payload: JSON.stringify(responseArray) });
+        dispatch({ type: 'signin', payload: { userId, token, userName, userEmail, userDesignation } });
+        navigate('My Account')       
+
     } catch (err) {
-        console.log(err)
-        dispatch({ type: 'signup_error', payload: 'Something went wrong with signin.' })
+        dispatch({ type: 'signup_error', payload: true })
     }
 };
+
+const createNote = (dispatch) => async ({ title, description, department, uid }) => {
+
+    console.log(typeof title, typeof description, typeof department, typeof uid )
+    try{
+        const response = await serverAPI.post('/notes', {title, description, department, creator: uid}  );
+     
+        dispatch({ type: 'note_create_success', payload: 'Note created successfully' });
+        navigate('ListNotes')       
+
+    } catch (err) {
+        console.log(err)
+        dispatch({ type: 'note_create_fail', payload: 'Something went wrong while creating the note' })
+    }
+};
+
+// const fetchUserDetails = (dispatch) => async ({ title, description, department, fileResponse, uid }) => {
+//     try{
+//         // Make a API request to signup with that entered email and password
+//         const response = await serverAPI.post('/notes', { title, description, department, fileResponse, uid });
+       
+//         dispatch({ type: 'note_create_success', payload: 'Note created successfully' });
+//         navigate('ListNotes')       
+
+//     } catch (err) {
+//         dispatch({ type: 'note_create_fail', payload: 'Could not create the note' })
+//     }
+// };
 
 
 const signout = (dispatch) =>  async () => {
         // Sign out
         await AsyncStorage.removeItem('token');
+        await AsyncStorage.removeItem('userId');
         dispatch({ type: 'signout' });
         navigate('UserLogin' );       
 
@@ -76,11 +147,20 @@ const signout = (dispatch) =>  async () => {
 
 export const { Provider, Context } = createDataContext(
     authReducer,
-    {signup,
+    {
+    signup,
     signin,
     signout,
     clearErrorMessage,
-    tryLocalSignin
-},
-    { token: null, message: '' }
+    tryLocalSignin,
+    createNote,
+    // fetchUserDetails
+    },
+    { token: null,
+      userId: null,
+      userName : null,
+      userEmail: null,
+      userDesignation: null,
+      message: ''
+    }
 );
