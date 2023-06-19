@@ -37,6 +37,10 @@ const authReducer = (state, action ) => {
              return { ...state, message: action.payload }
         case 'note_create_fail':
              return { ...state, message: action.payload }
+        case 'notes_fetch_success':
+             return { ...state, data: action.payload }
+        case 'notes_fetch_fail':
+             return { ...state, message: action.payload }
         default:
             return state;
     }
@@ -122,24 +126,28 @@ const createNote = (dispatch) => async ({ title, description, department, uid })
     }
 };
 
-// const fetchUserDetails = (dispatch) => async ({ title, description, department, fileResponse, uid }) => {
-//     try{
-//         // Make a API request to signup with that entered email and password
-//         const response = await serverAPI.post('/notes', { title, description, department, fileResponse, uid });
-       
-//         dispatch({ type: 'note_create_success', payload: 'Note created successfully' });
-//         navigate('ListNotes')       
+const fetchUserNotes = (dispatch) => async (uid) => {
+    try{
+        // Make a API request to signup with that entered email and password
+        const response = await serverAPI.get(`/notes/user/${uid}`);
+        // console.log(response)
+        await AsyncStorage.setItem('data', JSON.stringify(response) );
 
-//     } catch (err) {
-//         dispatch({ type: 'note_create_fail', payload: 'Could not create the note' })
-//     }
-// };
+        dispatch({ type: 'notes_fetch_success', payload: response.data.notes });
+        // navigate('ListNotes')       
+
+    } catch (err) {
+        dispatch({ type: 'notes_fetch_fail', payload: 'Something went wrong while fetching notes.' })
+    }
+};
 
 
 const signout = (dispatch) =>  async () => {
         // Sign out
         await AsyncStorage.removeItem('token');
         await AsyncStorage.removeItem('userId');
+        await AsyncStorage.removeItem('data');
+
         dispatch({ type: 'signout' });
         navigate('UserLogin' );       
 
@@ -154,13 +162,14 @@ export const { Provider, Context } = createDataContext(
     clearErrorMessage,
     tryLocalSignin,
     createNote,
-    // fetchUserDetails
+    fetchUserNotes
     },
     { token: null,
       userId: null,
       userName : null,
       userEmail: null,
       userDesignation: null,
-      message: ''
+      message: '',
+      data: []
     }
 );
