@@ -67,6 +67,10 @@ const SignupScreen = ({ navigation }) => {
         if(!password.trim() || password.length < 8 ){
             return updateError('Password is less than 8 characters!', setError)
         }
+        //  Handling Backend Validation from the server
+        if(state.message){
+            return updateError('Something went wrong during signin', setError);
+        }
         // password and cpassword must be the same
         if(password !== cpassword) return updateError('Password doesnot match!', setError)
 
@@ -99,10 +103,10 @@ const SignupScreen = ({ navigation }) => {
         <Spacer />
         <Spacer>
                 <Spacer />
-                {/* Name */}
                 { error ? (
                     <Text style={styles.error}>{error}</Text>
                 ) : null }
+                {/* Name */}
                 <Input 
                     label="Name"
                     value={uname}
@@ -154,9 +158,7 @@ const SignupScreen = ({ navigation }) => {
         
         <Text onPress={() => navigation.navigate('UserLogin')} style={styles.link}>Already Registered? Sign in</Text>
 
-        <Spacer>
-        { state.message ? <Text style={styles.error}>{state.message}</Text> : null }       
-        </Spacer>
+       
     </ScrollView>
     )
 };  
