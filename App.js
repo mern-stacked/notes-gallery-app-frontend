@@ -16,6 +16,7 @@ import SignupScreen from "./src/screens/SignupScreen";
 import AdminLoginScreen from "./src/screens/AdminLoginScreen";
 
 import { Provider as AuthProvider } from './src/context/AuthContext';
+import { Provider as NotesProvider } from './src/context/NotesContext';
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -141,11 +142,13 @@ function AllScreensStack() {
 
 export default App = () => {
   return (
-    <AuthProvider>
-       <NavigationContainer ref={navigationRef} >   
-         <AllScreensStack />
-       </NavigationContainer>
-    </AuthProvider>
+    <NotesProvider>
+      <AuthProvider>
+        <NavigationContainer ref={navigationRef} >   
+          <AllScreensStack />
+        </NavigationContainer>
+      </AuthProvider>
+    </NotesProvider>
   );
 }
 
