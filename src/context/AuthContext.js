@@ -41,6 +41,8 @@ const authReducer = (state, action ) => {
              return { ...state, data: action.payload }
         case 'notes_fetch_fail':
              return { ...state, message: action.payload }
+        case 'reset':
+             return { ...state, userName: '', userEmail: '', userDesignation: '' }
         default:
             return state;
     }
@@ -67,14 +69,14 @@ const tryLocalSignin = dispatch => async () => {
 }
 
 
-const signup = (dispatch) =>  async ({ uname, email, password, designation }) =>  {
+const signup = dispatch =>  async ({ uname, email, password, designation }) =>  {
     try{
             // Make a API request to signup with that entered email and password
             const response = await serverAPI.post('/users/signup', { name: uname, email, password, designation });
             // If we signup, modify our state, and say that we are authenticated  
             await AsyncStorage.setItem('token', response.data.token );
             dispatch({ type: 'signup', payload: response.data.token  });
-            navigate('UserLogin', { uname } )       
+            navigate('UserLogin')       
             // If signing up fails, manage it
         } catch (err) {
             dispatch({ type: 'signup_error', payload: 'Something went wrong with signup.' })
@@ -83,7 +85,7 @@ const signup = (dispatch) =>  async ({ uname, email, password, designation }) =>
     };
 
 
-const signin = (dispatch) => async ({ email, password }) => {
+const signin = dispatch => async ({ email, password }) => {
     try{
         // Make a API request to signup with that entered email and password
         const response = await serverAPI.post('/users/login', { email, password });
@@ -112,7 +114,7 @@ const signin = (dispatch) => async ({ email, password }) => {
 };
 
 
-const signout = (dispatch) =>  async () => {
+const signout = dispatch =>  async () => {
         // Sign out
         await AsyncStorage.removeItem('token');
         await AsyncStorage.removeItem('userId');
@@ -123,6 +125,10 @@ const signout = (dispatch) =>  async () => {
 
 }
 
+const reset = dispatch => async () => {
+    dispatch({ type: 'reset' })
+}
+
 export const { Provider, Context } = createDataContext(
     authReducer,
     {
@@ -131,6 +137,7 @@ export const { Provider, Context } = createDataContext(
     signout,
     clearErrorMessage,
     tryLocalSignin,
+    reset
     },
     { 
       token: null,

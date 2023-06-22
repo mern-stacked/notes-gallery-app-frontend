@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { ScrollView, View, StyleSheet, Image } from "react-native";
+import { ScrollView, View, StyleSheet, Image, ActivityIndicator } from "react-native";
 import { Text, Input, Button, Avatar } from '@rneui/themed';
 import Spacer from '../components/Spacer';
 import { Context as AuthContext } from '../context/AuthContext';
@@ -22,7 +22,8 @@ const isValidEmail = (value) => {
 
 const SignupScreen = ({ navigation }) => {
 
-    const {state, signup, clearErrorMessage } = useContext(AuthContext);
+    const {state, signup, clearErrorMessage} = useContext(AuthContext);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
@@ -36,7 +37,7 @@ const SignupScreen = ({ navigation }) => {
     // const [password, setPassword] = useState('');
     // const [cpassword, setcPassword] = useState('');
     // const [designation, setDesignation] = useState('');
-    const [ userInfo, setUserInfo] = useState({
+    const [ userInfo, setUserInfo ] = useState({
         uname: '',
         email: '',
         password: '',
@@ -78,11 +79,21 @@ const SignupScreen = ({ navigation }) => {
     
     }
 
-    const submitForm = () => {
+    const submitForm = async () => {
         if(isValidForm()){
-            signup({ uname, email, password, designation })
+            setLoading(true);
+            const response = await signup({ uname, email, password, designation });
+            setUserInfo({
+                uname: '',
+                email: '',
+                password: '',
+                cpassword: '',
+                designation: '',
+            })
+            setLoading(false);
         }
     }
+    
     
     return (
      <ScrollView style={styles.container}>    
@@ -151,8 +162,11 @@ const SignupScreen = ({ navigation }) => {
           
                 <Spacer>
                   {/* <Button title="Sign Up" onPress={() => signup({ uname, email, password, designation })} /> */}
-                  <Button title="Sign Up" onPress={submitForm} />
-
+                  { loading ? 
+                       
+                      <ActivityIndicator size="large" color="#00ff00" /> : 
+                      <Button title="Sign Up" onPress={submitForm} />
+                  }
                 </Spacer>
         </Spacer>
         
