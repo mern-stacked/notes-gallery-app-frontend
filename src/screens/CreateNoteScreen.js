@@ -3,16 +3,21 @@ import { ScrollView, StyleSheet, SafeAreaView, StatusBar } from "react-native";
 import { Input, Button, Text } from '@rneui/themed';
 import Spacer from '../components/Spacer';
 import { Context as AuthContext } from '../context/AuthContext';
+import { Context as NotesContext } from '../context/NotesContext';
+// import useSaveNote from '../hooks/useSaveNote';
 
 const CreateNoteScreen= ({ navigation }) => {
 
-    const { state, createNote, clearErrorMessage } = useContext(AuthContext);
+    const { state,  clearErrorMessage } = useContext(AuthContext);
+    const { createNote } = useContext(NotesContext);
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [department, setDepartment] = useState('');  
     const [fileResponse, setFileResponse] = useState([]);
     const [uid, setUid] = useState(state.userId)
+
+    // const [saveNote] = useSaveNote();
   
     return(
         <ScrollView style={styles.container}>
@@ -65,6 +70,7 @@ const CreateNoteScreen= ({ navigation }) => {
                 
                 <Spacer>
                    <Button title="Upload" onPress={() => createNote({ title, description, department, uid })} />
+                   {/* <Button title="Upload" onPress={saveNote} /> */}
                 </Spacer>
           </Spacer>
         </ScrollView>
