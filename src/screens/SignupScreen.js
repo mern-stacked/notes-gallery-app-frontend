@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { ScrollView, View, StyleSheet, Image, ActivityIndicator } from "react-native";
-import { Text, Input, Button, Avatar } from '@rneui/themed';
+import { Text, Input, Button } from '@rneui/themed';
 import Spacer from '../components/Spacer';
 import { Context as AuthContext } from '../context/AuthContext';
 
@@ -32,11 +32,7 @@ const SignupScreen = ({ navigation }) => {
          return unsubscribe;
     }, [navigation]);
     
-    // const [uname, setUname] = useState('');
-    // const [email, setEmail] = useState('');
-    // const [password, setPassword] = useState('');
-    // const [cpassword, setcPassword] = useState('');
-    // const [designation, setDesignation] = useState('');
+
     const [ userInfo, setUserInfo ] = useState({
         uname: '',
         email: '',
@@ -82,7 +78,7 @@ const SignupScreen = ({ navigation }) => {
     const submitForm = async () => {
         if(isValidForm()){
             setLoading(true);
-            const response = await signup({ uname, email, password, designation });
+            await signup({ uname, email, password, designation });
             setUserInfo({
                 uname: '',
                 email: '',
@@ -94,10 +90,8 @@ const SignupScreen = ({ navigation }) => {
         }
     }
     
-    
     return (
      <ScrollView style={styles.container}>    
-        {/* <NavigationEvents onWillFocus={clearErrorMessage} /> */}
         <Spacer>
             <View style={styles.imageCenter}>
                 <Image
@@ -121,13 +115,11 @@ const SignupScreen = ({ navigation }) => {
                 <Input 
                     label="Name"
                     value={uname}
-                    // onChangeText={setUname}
                     onChangeText={(value) => handleOnchangeText(value, 'uname') }
                     placeholder="This will be your username" />
                 {/* Email Address */}
                 <Input label="Email"
                     value={email}
-                    // onChangeText={setEmail}
                     onChangeText={(value) => handleOnchangeText(value, 'email') }
                     autoCapitalize='none'
                     autoCorrect={false}
@@ -135,7 +127,6 @@ const SignupScreen = ({ navigation }) => {
                 {/* Password */}
                 <Input label="Password"
                     value={password}
-                    // onChangeText={setPassword}
                     onChangeText={(value) => handleOnchangeText(value, 'password') }
                     autoCapitalize='none'
                     autoCorrect={false}
@@ -144,7 +135,6 @@ const SignupScreen = ({ navigation }) => {
                 {/* Confirm Password */}
                 <Input label="Confirm Password"
                     value={cpassword}
-                    // onChangeText={setcPassword}
                     onChangeText={(value) => handleOnchangeText(value, 'cpassword') }
                     autoCapitalize='none'
                     autoCorrect={false}
@@ -155,13 +145,11 @@ const SignupScreen = ({ navigation }) => {
                 <Input label="Designation"
                         value={designation}
                         onChangeText={(value) => handleOnchangeText(value, 'designation') }
-                        // type="select"
-                        // onChangeText={setDesignation}
                         placeholder="Faculty / Student"
                 />
           
                 <Spacer>
-                  {/* <Button title="Sign Up" onPress={() => signup({ uname, email, password, designation })} /> */}
+                  {/* SignUp Button */}
                   { loading ? 
                        
                       <ActivityIndicator size="large" color="#00ff00" /> : 
