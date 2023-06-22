@@ -17,12 +17,14 @@ const SplashSceen = () => {
     return(
         <View style={styles.container}>
             <Spacer>
-                <Image
-                    style={styles.tinyLogo}
-                    source={{
-                    uri: 'https://niefgc.ac.in/images/nie.png',
-                }}
-                />
+                <View style={styles.imageCenter}>
+                    <Image
+                        style={styles.tinyLogo}
+                        source={{
+                        uri: 'https://niefgc.ac.in/images/nie.png',
+                    }}
+                    />
+                </View>
             </Spacer>
             <Spacer />
             <Spacer>
@@ -39,11 +41,16 @@ const styles = StyleSheet.create({
         padding: 40,
         marginTop: 160
     },
+
+   imageCenter: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+
     tinyLogo: {
         width: 95,
-        marginLeft: 195,
-        marginTop: 250,
-        height: 100,
+        height: 120,
     },
 
     center: {

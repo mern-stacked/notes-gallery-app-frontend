@@ -23,12 +23,14 @@ const SigninScreen = ({ navigation }) => {
             {/* <NavigationEvents onWillFocus={clearErrorMessage} /> */}
            <Spacer>
            <Spacer>
+             <View style={styles.imageCenter}>
                 <Image
                     style={styles.tinyLogo}
                     source={{
                     uri: 'https://niefgc.ac.in/images/nie.png',
                 }}
                 />
+            </View>
             </Spacer>
             <Spacer />
              <Text h4 style={styles.center}>Sign In to upload a Note.</Text>
@@ -78,10 +80,15 @@ const styles = StyleSheet.create({
         marginTop: 160
     },
 
+     imageCenter: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+
     tinyLogo: {
         width: 95,
-        marginLeft: 195,
-        height: 100,
+        height: 120,
     },
 
     center: {

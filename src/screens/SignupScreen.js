@@ -86,16 +86,16 @@ const SignupScreen = ({ navigation }) => {
     
     return (
      <ScrollView style={styles.container}>    
-        {/* <NavigationEvents onWillFocus={clearErrorMessage} />        */}
+        {/* <NavigationEvents onWillFocus={clearErrorMessage} /> */}
         <Spacer>
-            <Spacer>
+            <View style={styles.imageCenter}>
                 <Image
                     style={styles.tinyLogo}
                     source={{
                     uri: 'https://niefgc.ac.in/images/nie.png',
                 }}
                 />
-            </Spacer>
+            </View>
             <Spacer />
              <Text h2 style={styles.center}>Welcome!</Text>
              <Text h4 style={styles.center}>Sign Up to upload a Note.</Text>
@@ -176,11 +176,16 @@ const styles = StyleSheet.create({
         marginTop: 30
     },
 
+    imageCenter: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+
     tinyLogo: {
         width: 95,
-        marginLeft: 195,
-        height: 100,
-      },
+        height: 120,
+    },
 
     center: {
       textAlign: 'center',
