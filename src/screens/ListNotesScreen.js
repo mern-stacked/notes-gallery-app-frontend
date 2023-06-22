@@ -10,8 +10,6 @@ const ListNotesScreen= ({ navigation }) => {
     const { state } = useContext(NotesContext);
     const [ fetchUserNotes ] = notesHook();
 
-    console.log(`data ${state.data}`)
-
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
             fetchUserNotes()
@@ -19,7 +17,6 @@ const ListNotesScreen= ({ navigation }) => {
 
        return unsubscribe;
     }, [navigation]) 
-
   
     return(
         <ScrollView style={styles.container}> 

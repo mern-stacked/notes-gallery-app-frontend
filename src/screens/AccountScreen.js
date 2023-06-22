@@ -1,20 +1,13 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { View, StyleSheet, SafeAreaView } from "react-native";
-import { Text, Input, Button, Avatar } from '@rneui/themed';
+import { Text, Button, Avatar } from '@rneui/themed';
 import Spacer from '../components/Spacer';
 import { Context as AuthContext } from '../context/AuthContext';
 
 
 const AccountScreen = ({ route, navigation }) => {
     
-    const { state, signout, fetchUserDetails } = useContext(AuthContext);
-    
-    useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => {
-            // console.log('hi there')
-        });
-      return unsubscribe;
-    }, [navigation])
+    const { state, signout } = useContext(AuthContext);
   
     return(
         <SafeAreaView forceInset={{ top: 'always' }}>
@@ -32,7 +25,6 @@ const AccountScreen = ({ route, navigation }) => {
 
     );
 }
-
 
 const styles = StyleSheet.create({
 

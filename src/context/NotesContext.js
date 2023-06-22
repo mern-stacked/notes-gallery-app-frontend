@@ -46,7 +46,6 @@ const fetchUserNotes = (dispatch) => async (uid) => {
     try{
         // Make a API request to signup with that entered email and password
         const response = await serverAPI.get(`/notes/user/${uid}`);
-        console.log(response.data.notes)
         dispatch({ type: 'notes_fetch_success', payload: response.data.notes });
         navigate('ListNotes')       
 

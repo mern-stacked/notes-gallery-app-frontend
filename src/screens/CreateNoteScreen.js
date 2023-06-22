@@ -17,7 +17,6 @@ const CreateNoteScreen= ({ navigation }) => {
     const [fileResponse, setFileResponse] = useState([]);
     const [uid, setUid] = useState(state.userId)
 
-    // const [saveNote] = useSaveNote();
   
     return(
         <ScrollView style={styles.container}>
@@ -70,7 +69,6 @@ const CreateNoteScreen= ({ navigation }) => {
                 
                 <Spacer>
                    <Button title="Upload" onPress={() => createNote({ title, description, department, uid })} />
-                   {/* <Button title="Upload" onPress={saveNote} /> */}
                 </Spacer>
           </Spacer>
         </ScrollView>
