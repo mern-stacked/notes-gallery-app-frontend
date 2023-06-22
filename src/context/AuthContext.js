@@ -111,36 +111,6 @@ const signin = (dispatch) => async ({ email, password }) => {
     }
 };
 
-const createNote = (dispatch) => async ({ title, description, department, uid }) => {
-
-    console.log(typeof title, typeof description, typeof department, typeof uid )
-    try{
-        const response = await serverAPI.post('/notes', {title, description, department, creator: uid}  );
-     
-        dispatch({ type: 'note_create_success', payload: 'Note created successfully' });
-        navigate('ListNotes')       
-
-    } catch (err) {
-        console.log(err)
-        dispatch({ type: 'note_create_fail', payload: 'Something went wrong while creating the note' })
-    }
-};
-
-const fetchUserNotes = (dispatch) => async (uid) => {
-    try{
-        // Make a API request to signup with that entered email and password
-        const response = await serverAPI.get(`/notes/user/${uid}`);
-        // console.log(response)
-        await AsyncStorage.setItem('data', JSON.stringify(response) );
-
-        dispatch({ type: 'notes_fetch_success', payload: response.data.notes });
-        // navigate('ListNotes')       
-
-    } catch (err) {
-        dispatch({ type: 'notes_fetch_fail', payload: 'Something went wrong while fetching notes.' })
-    }
-};
-
 
 const signout = (dispatch) =>  async () => {
         // Sign out
@@ -161,15 +131,13 @@ export const { Provider, Context } = createDataContext(
     signout,
     clearErrorMessage,
     tryLocalSignin,
-    createNote,
-    fetchUserNotes
     },
-    { token: null,
+    { 
+      token: null,
       userId: null,
       userName : null,
       userEmail: null,
       userDesignation: null,
       message: '',
-      data: []
     }
 );
